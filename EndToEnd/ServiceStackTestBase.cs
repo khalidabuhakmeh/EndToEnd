@@ -69,27 +69,5 @@ namespace EndToEnd
         }
     }
 
-    public static class MyValidationExtensions
-    {
-        public static void RegisterValidators(this Container container, params Assembly[] assemblies)
-        {
-            foreach (Assembly assembly in assemblies)
-            {
-                foreach (Type validator in Enumerable.Where<Type>((IEnumerable<Type>)assembly.GetTypes(), (Func<Type, bool>)(t => ReflectionExtensions.IsOrHasGenericInterfaceTypeOf(t, typeof(IValidator<>)))))
-                    ServiceStack.ServiceInterface.Validation.ValidationExtensions.RegisterValidator(container, validator);
-            }
-        }
-
-        public static void RegisterValidator(this Container container, Type validator)
-        {
-            Type baseType = validator.BaseType;
-            while (!baseType.IsGenericType)
-                baseType = baseType.BaseType;
-            Type inFunqAsType = typeof(IValidator<>).MakeGenericType(new Type[1]
-      {
-        baseType.GetGenericArguments()[0]
-      });
-            ContainerTypeExtensions.RegisterAutoWiredType(container, validator, inFunqAsType, ReuseScope.None);
-        }
-    }
+    
 }

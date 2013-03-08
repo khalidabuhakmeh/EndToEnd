@@ -52,7 +52,7 @@ namespace EndToEnd
 
             try
             {
-                var response = Client.Send(new CreateWidget
+                var response = Client.Post(new CreateWidget
                 {
                     Name = null
                 });
